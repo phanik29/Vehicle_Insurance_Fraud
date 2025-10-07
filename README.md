@@ -1,9 +1,4 @@
 # Capstone Final Project: Vehicle Insurance Fraud Detection
-## Initial Report and Exploratory Data Analysis (EDA)
-
-**Jupyter Notebook:** [vehicle_insurance_fraud.ipynb](vehicle_insurance_fraud.ipynb)
-
----
 
 ## Executive Summary
 
@@ -12,7 +7,13 @@ This project addresses the critical problem of vehicle insurance fraud detection
 **Key Results:**
 - Successfully analyzed 16,000 insurance claims with 33+ features
 - Implemented comprehensive EDA revealing class imbalance 
-- Built baseline Logistic Regression model with ROC-AUC evaluation
+- Engineered features and handled categorical variables effectively
+- Evaluated multiple machine learning models including Decision Trees, Random Forests, Gradient Boosting, Logistic Regression, XGBoost, Bagging, AdaBoost, and Voting Classifiers
+- Applied SMOTE to address class imbalance
+- Tuned hyperparameters using GridSearchCV to optimize model performance
+- Identified Bagging Classifier as the most cost-effective model with high recall (0.93) and reasonable precision (0.13), balancing fraud detection and investigation costs
+- Demonstrated significant potential for cost savings and improved operational efficiency in fraud detection
+- Provided actionable recommendations for model deployment and continuous improvement
 
 ---
 
