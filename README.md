@@ -28,7 +28,7 @@ Detecting fraudulent claims is essential to reduce financial losses and improve 
 - **Size:** 16,000 rows × 33 columns
 - **Target Variable:** FraudFound_P (binary: 0=legitimate, 1=fraudulent)
 - **Class Imbalance:** 94% legitimate, 6% fraudulent
-        - ![Claim Class Distribution](images/class_distribution.png)
+   - ![Claim Class Distribution](images/class_distribution.png)
 - **Time Frame:** Claims from 1994 to 1996
 - **Features:** Mix of numerical and categorical variables including demographics, vehicle info, policy details, and claim characteristics
 
@@ -340,7 +340,7 @@ Total Cost = $288,000 + $4,706,500 = $4,994,500
 - **Model Deployment:** Implement the selected model (e.g., Bagging_DT) in a real-time fraud detection system.
 - **Continuous Monitoring:** Regularly monitor model performance and retrain with new data to adapt to evolving fraud patterns.
 - **Feature Expansion:** Explore additional features such as claim history, customer behavior, and external data sources to enhance model accuracy.
-- **Advanced Techniques:** Experiment with ensemble methods, deep learning, and anomaly detection techniques for further improvements.
+- **Advanced Techniques:** Try with more model ensembles and sampling algorithms (i.e. ADASYN). Also, experiment with ensemble methods, deep learning, and anomaly detection techniques for further improvements.
 - **Cost-Benefit Analysis:** Continuously evaluate the financial impact of the fraud detection system to ensure it meets business objectives
 
 ### Outline of the Project
