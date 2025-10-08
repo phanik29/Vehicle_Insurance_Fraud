@@ -14,6 +14,7 @@ This project addresses the critical problem of vehicle insurance fraud detection
 - Identified Bagging Classifier as the most cost-effective model with high recall (0.93) and reasonable precision (0.13), balancing fraud detection and investigation costs
 - Demonstrated significant potential for cost savings and improved operational efficiency in fraud detection
 - Provided actionable recommendations for model deployment and continuous improvement
+- For the Bagging_DT model, the most influential factors are having a liability base policy (42.59%), the policy holder being at fault (33.50%), and an address change between 2 to 3 years before the claim (9.67%). Other notable contributors include the third party being at fault, the car make being Toyota, and the policy type being Sedan - Collision. Additional features like claims made in November or on specific days of the week, and the car make being Mercury, also play smaller roles in the model’s predictions.
 
 ---
 
@@ -29,7 +30,7 @@ Detecting fraudulent claims is essential to reduce financial losses and improve 
 - **Size:** 16,000 rows × 33 columns
 - **Target Variable:** FraudFound_P (binary: 0=legitimate, 1=fraudulent)
 - **Class Imbalance:** 94% legitimate, 6% fraudulent
-   - ![Claim Class Distribution](images/class_distribution.png)
+- ![Claim Class Distribution](images/class_distribution.png)
 - **Time Frame:** Claims from 1994 to 1996
 - **Features:** Mix of numerical and categorical variables including demographics, vehicle info, policy details, and claim characteristics
 
@@ -40,7 +41,7 @@ Detecting fraudulent claims is essential to reduce financial losses and improve 
 - **Class Distribution:** 85% legitimate claims, 15% fraudulent claims
 - **Data Quality:** Clean dataset with no missing values or duplicates
 - **Feature Types:** 9 numerical columns, 24 categorical columns
-       - ![Data Types Distribution](images/data_distribution.png)
+  - ![Data Types Distribution](images/data_distribution.png)
 - **Column Overview:** 
 
   | Column Name           | Data Type   | Description                              |
@@ -203,17 +204,18 @@ Columns to be label encoded:
   - For imbalanced fraud detection, prioritize Recall to maximize fraud detection, then F1-score to balance precision and recall, and finally AUC for overall model discrimination.
   - Based on these criteria, LogisticRegression is the best model for this fraud detection task.
 
+
 | Model Name         | Recall | F1-Score | AUC  | Precision |
-|--------------------|--------|----------|------|-----------|
-| LogisticRegression | 0.83   | 0.22     | 0.81 | 0.13      |
-| XGBoost            | 0.40   | 0.54     | 0.97 | 0.84      |
-| DecisionTree       | 0.35   | 0.32     | 0.65 | 0.29      |
-| Bagging_DT         | 0.06   | 0.10     | 0.80 | 0.39      |
-| Voting_Soft        | 0.09   | 0.16     | 0.94 | 0.89      |
-| Voting_Hard        | 0.03   | 0.06     | NaN  | 0.75      |
-| AdaBoost           | 0.06   | 0.09     | 0.80 | 0.17      |
-| RandomForest       | 0.02   | 0.03     | 0.85 | 0.75      |
-| GradientBoosting   | 0.02   | 0.04     | 0.84 | 0.36      |
+|--------------------|-------|----------|------|-----------|
+| LogisticRegression | 0.84  | 0.23     | 0.81 | 0.13      |
+| DecisionTree       | 0.38  | 0.35     | 0.67 | 0.33      |
+| XGBoost            | 0.35  | 0.49     | 0.97 | 0.82      |
+| AdaBoost           | 0.08  | 0.10     | 0.77 | 0.13      |
+| Voting_Soft        | 0.07  | 0.14     | 0.94 | 1.00      |
+| GradientBoosting   | 0.05  | 0.10     | 0.85 | 0.67      |
+| Voting_Hard        | 0.05  | 0.10     | NaN  | 0.91      |
+| Bagging_DT         | 0.04  | 0.08     | 0.81 | 0.31      |
+| RandomForest       | 0.02  | 0.03     | 0.84 | 0.75      |
 
 
 ## 5. Machine Learning Models with hyperparameter tuning
@@ -258,24 +260,22 @@ Columns to be label encoded:
   - Bagging_DT and LogisticRegression have high Recall (0.93 and 0.86) and better F1-score (0.23), with similar Precision.
   - DecisionTree has slightly lower Recall (0.85) but the highest F1-score (0.24) among high-recall models.
 
+| Model Name         | Recall | F1-Score | ROC-AUC | Precision | Best Parameters                                                                             |
+|--------------------|--------|----------|---------|-----------|---------------------------------------------------------------------------------------------|
+| AdaBoost           | 0.97   | 0.16     | 0.76    | 0.09      | {'model__estimator__max_depth': 1, 'model__learning_rate': 0.01, 'model__n_estimators': 50} |
+| Bagging_DT         | 0.93   | 0.23     | 0.82    | 0.13      | {'model__estimator__max_depth': 3, 'model__max_samples': 0.5, 'model__n_estimators': 50}    |
+| LogisticRegression | 0.87   | 0.23     | 0.81    | 0.13      | {'model__C': 0.1}                                                                           |
+| DecisionTree       | 0.85   | 0.24     | 0.83    | 0.14      | {'model__max_depth': 5, 'model__min_samples_split': 2}                                      |
+| RandomForest       | 0.33   | 0.22     | 0.82    | 0.16      | {'model__max_depth': 10, 'model__n_estimators': 200}                                        |
+| Voting_Soft        | 0.14   | 0.23     | 0.95    | 0.89      | {'voting': 'soft', 'weights': [2, 2, 1]}                                                    |
+| GradientBoosting   | 0.12   | 0.15     | 0.83    | 0.18      | {'model__learning_rate': 0.1, 'model__n_estimators': 200}                                   |
+| Voting_Hard        | 0.05   | 0.10     | NaN     | 0.90      | {'voting': 'hard', 'weights': [1, 1, 1]}                                                    |
+| XGBoost            | 0.0    | 0.0      | 0.81    | 0.0       | {'model__learning_rate': 0.1, 'model__max_depth': 3}                                        |
+
 ###### Recommended:
   - To minimize missed fraud (maximize recall): Choose AdaBoost. Note there will be large number of false alarms and a high manual review workload.
   - To minimize false alarms (maximize precision): Choose Voting_Soft. Note that we will miss a large amount of fraud.
   - For the best overall balance and potential: Select XGBoost. The existing version in the table isn't tuned for the highest recall, but it is known for its strong performance in fraud detection and can be adjusted further.
-
-| Model Name         | Recall | F1-Score | ROC-AUC | Precision | Best Parameters                                                                             |
-|--------------------|--------|----------|---------|-----------|---------------------------------------------------------------------------------------------|
-| AdaBoost           | 0.97   | 0.16     | 0.76    | 0.09      | {'model__estimator__max_depth': 1, 'model__learning_rate': 0.01, 'model__n_estimators': 50} |
-| Bagging_DT         | 0.93   | 0.23     | 0.83    | 0.13      | {'model__estimator__max_depth': 3, 'model__max_samples': 0.5, 'model__n_estimators': 50}    |
-| LogisticRegression | 0.86   | 0.23     | 0.81    | 0.13      | {'model__C': 0.1}                                                                           |
-| DecisionTree       | 0.85   | 0.24     | 0.83    | 0.14      | {'model__max_depth': 5, 'model__min_samples_split': 2}                                      |
-| RandomForest       | 0.31   | 0.23     | 0.82    | 0.18      | {'model__max_depth': 10, 'model__n_estimators': 200}                                        |
-| XGBoost            | 0.28   | 0.25     | 0.83    | 0.23      | {'model__learning_rate': 0.1, 'model__max_depth': 3}                                        |
-| Voting_Soft        | 0.2    | 0.33     | 0.95    | 0.93      | {'voting': 'soft', 'weights': [2, 2, 1]}                                                    |
-| GradientBoosting   | 0.12   | 0.16     | 0.83    | 0.23      | {'model__learning_rate': 0.1, 'model__n_estimators': 200}                                   |
-| Voting_Hard        | 0.03   | 0.06     | NaN     | 0.75      | {'voting': 'hard', 'weights': [1, 1, 1]}                                                    |
-
-
 
 ### Business Impact
 Implementing an effective vehicle insurance fraud detection system can lead to significant cost savings for insurance companies by reducing fraudulent claims payouts. Additionally, it can enhance customer trust by ensuring that legitimate claims are processed efficiently
@@ -288,8 +288,8 @@ Lets assume the average cost of a fraudulent claim is $10,000. If the model can 
 | the average cost of a fraudulent claim | $10000 | 
 | that investigating a claim costs       | $500   |
 
-Cost of False Negative (missed fraud): the average cost of a fraudulent claim ($10,000).
-Cost of False Positive (false alarm): the cost of investigating a claim ($500).
+  - Cost of False Negative (missed fraud): the average cost of a fraudulent claim ($10,000)
+  - Cost of False Positive (false alarm): the cost of investigating a claim ($500).
 
 In the AdaBoost model, with a precision of 0.09, 91% of the claims it flags for investigation are false positives. This means AdaBoost would generate a lot of false alarms, leading to a high volume of investigation costs, even though each one is relatively small. The Voting_Soft model, with a precision of 0.93, would generate far fewer false alarms and thus have lower overall investigation costs, even though it misses more fraud cases.
 Based on the business goal, and these costs the right model can be selected.
@@ -315,12 +315,14 @@ For this particular dataset,
                    = 10344
   - So 9,413 legitimate claims will be investigated unnecessarily.
 
-Cost of False Negatives = (1 - Recall) * Actual Fraudulent Claims * Cost of a fraudulent claim
-Cost of False Positives = (1 - precision) * Predicted Fraudulent Claims * Cost of investigating a claim
-
-Cost of False Negatives = (1 - 0.97) * 960 * $10,000 = $288,000
-Cost of False Positives = 9413 * $500 = $4,706,500
-Total Cost = $288,000 + $4,706,500 = $4,994,500
+**Cost Calculations:**
+  - **Cost of False Negatives**: `(1 - recall) x  Actual Fraudulent Claims x  Cost of a fraudulent claim`
+  - **Cost of False Positives**: `(1 - precision) x  Predicted Fraudulent Claims x  Cost of investigating a claim`
+  - **Total Cost** = `Cost of False Negatives + Cost of False Positives`
+---
+- Cost of False Negatives = (1 - 0.97) * 960 * $10,000 = $288,000
+- Cost of False Positives = 9413 * $500 = $4,706,500
+- Total Cost = $288,000 + $4,706,500 = $4,994,500
 
 ** For other models, the calculations are as follows: **
 
